@@ -5,17 +5,20 @@ import { appDispatch, appSelector } from "@/store/hooks";
 import { getKanyeQuote } from "@/features/random";
 import { wrapper } from "@/store/store";
 import Link from "next/link";
+import Layout from "@/components/admin/Layout/Layout";
 
 const News: NextPage = ({ message }: any) => {
   const dispatch = appDispatch();
   const { data, pending, error } = appSelector((state) => state.kanyeQuote);
 
   return (
-    <div>
-      <h2>News</h2>
-      <p>{message}</p>
-      <Link href="/admin/user">GO User</Link>
-    </div>
+    <Layout>
+      <div>
+        <h2>News</h2>
+        <p>{message}</p>
+        <Link href="/admin/user">GO User</Link>
+      </div>
+    </Layout>
   );
 };
 
@@ -28,4 +31,4 @@ export const getStaticProps = wrapper.getStaticProps(
     }
 );
 
-export default News;
+export default withAuth(News);

@@ -20,7 +20,8 @@
       "@/store/*": ["store/*"],
       "@/features/*": ["features/*"],
       "@/components/*": ["components/*"],
-      "@/models/*": ["models/*"]
+      "@/models/*": ["models/*"],
+      "@/assets/*": ["assets/*"]
       // "@/utils/*": ["utils/*"],
       // "@/services/*": ["services/*"]
     }

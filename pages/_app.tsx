@@ -24,7 +24,7 @@ import { PersistGate } from "redux-persist/integration/react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const store: any = useStore();
-  // const dispatch = appDispatch();
+  const dispatch = appDispatch();
   // React.useEffect(() => {
   //   dispatch(getSession());
   // }, [dispatch]);

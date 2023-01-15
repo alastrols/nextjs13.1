@@ -70,13 +70,6 @@ const Login = ({}: Props) => {
         <Button type="submit" fullWidth variant="contained" color="primary">
           Login
         </Button>
-        {/* <CancelButton
-          fullWidth
-          variant="contained"
-          onClick={() => router.push("/admin/register")}
-        >
-          Register
-        </CancelButton> */}
       </Form>
     );
   };
@@ -92,18 +85,6 @@ const Login = ({}: Props) => {
       }}
     >
       <Card sx={{ maxWidth: 450, textAlign: "center" }}>
-        {/* <CardMedia
-          sx={{ height: 155 }}
-          image="/static/images/logo.png"
-          title="Contemplative Reptile"
-        /> */}
-        {/* <Image
-            src="/static/images/logo.png"
-            width={200}
-            height={68}
-            objectFit="cover"
-            alt="logo"
-          /> */}
         <CardContent>
           <Formik
             initialValues={{ username: "", password: "" }}
@@ -120,19 +101,6 @@ const Login = ({}: Props) => {
           </Formik>
         </CardContent>
       </Card>
-
-      {/* <style jsx global>
-        {`
-          body {
-            min-height: 100vh;
-            position: relative;
-            margin: 0;
-            background-size: cover;
-            background-image: url("/static/img/bg4.jpg");
-            text-align: center;
-          }
-        `}
-      </style> */}
     </Box>
   );
 };

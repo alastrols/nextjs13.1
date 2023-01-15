@@ -11,12 +11,10 @@ const withAuth = (WrappedComponent: React.FC) => (props: any) => {
     (state: any) => state.login
   );
   const dispatch = appDispatch();
-  React.useEffect(() => {
-    dispatch(getSession());
-  }, [dispatch]);
 
   // is fetching session (eg. show spinner)
   if (isAuthenticating) {
+    dispatch(getSession());
     return null;
   }
   // If user is not logged in, return login component
@@ -32,12 +30,12 @@ const withAuth = (WrappedComponent: React.FC) => (props: any) => {
       return null;
     }
   }
-  
+
   if (route == "/admin") {
     if (isAuthenticated) {
       router.push(`/admin/user`);
       return null;
-    }else{
+    } else {
       router.push(`/admin/login`);
       return null;
     }
