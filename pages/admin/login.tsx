@@ -112,7 +112,7 @@ const Login = ({}: Props) => {
               if (response.meta.requestStatus === "rejected") {
                 alert("Login Failed!");
               } else {
-                router.push("/");
+                router.push("/admin/user");
               }
             }}
           >
