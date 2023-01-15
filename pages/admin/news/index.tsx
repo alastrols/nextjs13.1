@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import withAuth from "@/components/admin/withAuth";
 import { GetServerSideProps, NextPage } from "next/types";
 import React from "react";
@@ -15,10 +16,26 @@ const News: NextPage = ({ message }: any) => {
       <h2>News</h2>
       <p>{message}</p>
       <Link href="/admin/user">GO User</Link>
+=======
+import React from "react";
+import withAuth from "@/components/admin/withAuth";
+import Head from "next/head";
+import Link from "next/link";
+
+const index = () => {
+  return (
+    <div>
+      <Head>
+        <title>News Management</title>
+      </Head>
+      <p>User News</p>
+      <Link href="/admin/user">Go User Page</Link>
+>>>>>>> d771c8f00f1fecbb872b1b7395a5e8ea0a54fda6
     </div>
   );
 };
 
+<<<<<<< HEAD
 export const getStaticProps = wrapper.getStaticProps(
   (store) =>
     async ({ req, res }: any) => {
@@ -29,3 +46,6 @@ export const getStaticProps = wrapper.getStaticProps(
 );
 
 export default News;
+=======
+export default withAuth(index);
+>>>>>>> d771c8f00f1fecbb872b1b7395a5e8ea0a54fda6
