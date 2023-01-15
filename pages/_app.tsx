@@ -9,14 +9,16 @@ import { PersistGate } from "redux-persist/integration/react";
 function MyApp({ Component, ...rest }: AppProps) {
   const { props } = wrapper.useWrappedStore(rest);
   const store: any = useStore();
-  const dispatch = appDispatch();
-  React.useEffect(() => {
-    dispatch(getSession());
-  }, [dispatch]);
+  // const dispatch = appDispatch();
+  // React.useEffect(() => {
+  //   dispatch(getSession());
+  // }, [dispatch]);
   return (
-    <PersistGate persistor={store.__persistor} loading={null}>
+    <Provider store={store}>
+      {/* <PersistGate persistor={store.__persistor} loading={null}> */}
       <Component {...props.pageProps} />
-    </PersistGate>
+      {/* </PersistGate> */}
+    </Provider>
   );
 }
 
