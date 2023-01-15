@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { setCookie, getCookie } from "cookies-next";
+import { setCookie, getCookie, deleteCookie } from "cookies-next";
+import Router from "next/router";
 
 export const login = createAsyncThunk(
   "auth/login",
@@ -21,4 +22,9 @@ export const getSession = createAsyncThunk("auth/session", async () => {
     headers: { "access-token": `Bearer ${getCookie("access-token")}` },
   });
   return response.data;
+});
+
+export const logout = createAsyncThunk("auth/logout", async () => {
+  deleteCookie("access-token");
+  Router.push("/admin/login");
 });

@@ -1,0 +1,1 @@
+{"pageProps":{"message":"Hello world!","initialState":{"counter":{"value":0},"kanyeQuote":{"data":{"quote":"click that button"},"pending":false,"error":false},"login":{"data":{"user_id":"","username":"","fullname":"","token":""},"isAuthenticated":false,"isAuthenticating":true},"_persist":{"version":-1,"rehydrated":false}}},"__N_SSG":true}

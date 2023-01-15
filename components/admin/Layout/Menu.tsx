@@ -131,52 +131,6 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
           </ListItem>
         </Link>
       </List>
-
-      {/* <List> */}
-      {/* Stock */}
-      {/* <Link href="/news" passHref>
-          <ListItem
-            button
-            className={
-              router.pathname === "/news"
-                ? "Mui-selected"
-                : router.pathname === "/news/add"
-                ? "Mui-selected"
-                : router.pathname === "/news/edit"
-                ? "Mui-selected"
-                : ""
-            }
-          >
-            <ListItemIcon>
-              <NewspaperIcon />
-            </ListItemIcon>
-            <ListItemText primary="News" />
-          </ListItem>
-        </Link>
-      </List>
-
-      <List> */}
-      {/* Stock */}
-      {/* <Link href="/blog" passHref>
-          <ListItem
-            button
-            className={
-              router.pathname === "/blog"
-                ? "Mui-selected"
-                : router.pathname === "/blog/add"
-                ? "Mui-selected"
-                : router.pathname === "/blog/edit"
-                ? "Mui-selected"
-                : ""
-            }
-          >
-            <ListItemIcon>
-              <BookIcon />
-            </ListItemIcon>
-            <ListItemText primary="Blog" />
-          </ListItem>
-        </Link>
-      </List> */}
     </Drawer>
   );
 }

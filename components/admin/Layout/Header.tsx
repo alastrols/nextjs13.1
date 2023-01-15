@@ -11,6 +11,7 @@ import { AccountCircle } from "@mui/icons-material";
 import { Badge, Box, Menu, MenuItem } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import { logout } from "@/features/admin/login";
 
 // import { logout } from "@/store/slices/adminSlice";
 import { appDispatch, appSelector } from "@/store/hooks";
@@ -103,8 +104,7 @@ export default function Header({ open, onDrawerOpen }: HeaderProps) {
             open={showProfileMenu}
             onClose={handleClose}
           >
-            <MenuItem onClick={() => alert("logout")}>Logout</MenuItem>
-            {/* <MenuItem onClick={() => dispatch(logout())}>Logout</MenuItem> */}
+            <MenuItem onClick={() => dispatch(logout())}>Logout</MenuItem>
             {/* <MenuItem onClick={() => handleClose()}>My account</MenuItem> */}
           </Menu>
         </Box>
