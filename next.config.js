@@ -1,16 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
-  experimental: {
-    images: {
-      unoptimized: true,
-      allowFutureImage: true,
-    },
-  },
+  reactStrictMode: true,
   images: {
     domains: ["localhost"],
   },
   trailingSlash: true,
+  productionBrowserSourceMaps: false,
 };
 
 module.exports = nextConfig;

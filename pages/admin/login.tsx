@@ -16,7 +16,7 @@ import { purple, red } from "@mui/material/colors";
 import { appDispatch, appSelector } from "@/store/hooks";
 import { login } from "@/features/admin/login";
 import Image from "next/image";
-import withAuth from "@/components/withAuth";
+import withAuth from "@/components/admin/withAuth";
 type Props = {};
 
 const Login = ({}: Props) => {

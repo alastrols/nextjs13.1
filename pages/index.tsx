@@ -1,39 +1,41 @@
 import { useState } from "react";
+import { NextPage } from "next/types";
 import withAuth from "@/components/withAuth";
+import { NextSeo } from "next-seo";
 import { appDispatch, appSelector } from "@/store/hooks";
-import { decrement, increment, incrementByAmount } from "@/features/counter";
+import { getKanyeQuote } from "@/features/random";
+import { wrapper } from "@/store/store";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
-const IndexPage: React.FC = () => {
+export const getStaticProps = wrapper.getStaticProps(
+  (store) =>
+    ({ preview }) => {
+      store.dispatch({ type: "SET_NAME", payload: "Seymur" });
+      return { props: { status: "online" } };
+    }
+);
+
+const Index: NextPage = ({ status }: any) => {
   const dispatch = appDispatch();
-  // const count = useAppSelector(selectCount);
-  const { value } = appSelector((state) => state.counter);
-  const [incrementAmount, setIncrementAmount] = useState<number>(0);
+  const { data, pending, error } = appSelector((state) => state.kanyeQuote);
+  const router = useRouter();
 
   return (
-    <>
-      <h1>Welcome to the greatest app in the world!</h1>
-      <h2>
-        The current number is
-        {value}
-      </h2>
-      <div>
-        <input
-          value={incrementAmount}
-          onChange={(e) => setIncrementAmount(Number(e.target.value))}
-          type="number"
-        />
-        <button
-          onClick={() => dispatch(incrementByAmount(Number(incrementAmount)))}
-        >
-          Increment by amount
-        </button>
-      </div>
-      <div>
-        <button onClick={() => dispatch(decrement())}>Decrement by 1</button>
-        <button onClick={() => dispatch(increment())}>Increment by 1</button>
-      </div>
-    </>
+    <div>
+      <h2>Generate random Kanye West quote {status}</h2>
+      {pending && <p>Loading...</p>}
+      {<p>{data.quote}</p>}
+      <p>{status}</p>
+      <button onClick={() => dispatch(getKanyeQuote())} disabled={pending}>
+        Generate Kanye Quote
+      </button>
+    </div>
   );
 };
 
-export default IndexPage;
+// index.getInitialProps = async ({ req }: any) => {
+//   const userAgent = req ? req.headers["user-agent"] : navigator.userAgent;
+//   return { userAgent };
+// };
+export default Index;

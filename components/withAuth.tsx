@@ -1,12 +1,11 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { appSelector } from "@/store/hooks";
 
 const withAuth = (WrappedComponent: React.FC) => (props: any) => {
   const router = useRouter();
   const { route } = router;
-  const { data, isAuthenticated, isAuthenticating } = appSelector(
+  const { isAuthenticated, isAuthenticating } = appSelector(
     (state) => state.login
   );
 
@@ -16,9 +15,9 @@ const withAuth = (WrappedComponent: React.FC) => (props: any) => {
   }
   // If user is not logged in, return login component
 
-  if (route !== "/admin/login" && route !== "/admin/register") {
+  if (route !== "/login" && route !== "/register") {
     if (!isAuthenticated) {
-      router.push(`/admin/login`);
+      router.push(`/login`);
       return null;
     }
   } else {

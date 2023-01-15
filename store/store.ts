@@ -1,9 +1,24 @@
-import { Action, combineReducers, ThunkAction } from "@reduxjs/toolkit";
+import {
+  Action,
+  combineReducers,
+  AnyAction,
+  ThunkAction,
+  configureStore,
+} from "@reduxjs/toolkit";
 
 import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from "redux-thunk";
-import { createWrapper } from "next-redux-wrapper";
-import { persistStore, persistReducer } from "redux-persist";
+import { createWrapper, HYDRATE } from "next-redux-wrapper";
+import {
+  persistStore,
+  persistReducer,
+  REHYDRATE,
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 import { counterReducer } from "@/features/counter";
@@ -19,9 +34,6 @@ const combinedReducer: any = combineReducers({
   login: loginReducer,
 });
 
-const logger = createLogger();
-const sagaMiddleware = createSagaMiddleware();
-
 // BINDING MIDDLEWARE
 const bindMiddleware = (middleware: any) => {
   if (process.env.NODE_ENV !== "production") {
@@ -30,31 +42,51 @@ const bindMiddleware = (middleware: any) => {
   return applyMiddleware(...middleware);
 };
 
+const reducer = (
+  state: ReturnType<typeof combinedReducer>,
+  action: AnyAction
+) => {
+  if (action.type === REHYDRATE) {
+    const nextState = {
+      ...state,
+      ...action.payload,
+    };
+    return nextState;
+  } else if (action.type === HYDRATE) {
+    const nextState = {
+      ...state,
+      ...action.payload,
+    };
+    return nextState;
+  } else {
+    return combinedReducer(state, action);
+  }
+};
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["counter", "kanyeQuote"],
+};
+
+const persistedReducer = persistReducer(persistConfig, reducer);
+
 const makeStore: any = ({ isServer }: any) => {
   if (isServer) {
     //If it's on server side, create a store
-    return createStore(combinedReducer, bindMiddleware([logger]));
+    return createStore(persistedReducer, bindMiddleware([thunkMiddleware]));
     // return createStore(rootReducer, bindMiddleware([]));
   } else {
     //If it's on client side, create a store which will persist
 
-    const persistConfig = {
-      key: "root",
-      storage,
-      blacklist: ["login"],
-    };
-
-    const persistedReducer = persistReducer(persistConfig, combinedReducer);
-
     const store: any = createStore(
       persistedReducer,
       bindMiddleware([thunkMiddleware])
-      // bindMiddleware([sagaMiddleware])
     );
     store.__persistor = persistStore(store);
     return store;
   }
 };
+
 type Store = ReturnType<typeof makeStore>;
 export type AppDispatch = Store["dispatch"];
 export type RootState = ReturnType<Store["getState"]>;
