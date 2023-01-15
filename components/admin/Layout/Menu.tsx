@@ -11,7 +11,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import { ListItem, Stack } from "@mui/material";
+import { Collapse, ListItem, Stack } from "@mui/material";
 import Link from "next/link";
 import { Layers, BarChart, Person } from "@mui/icons-material";
 import ImageIcon from "@mui/icons-material/Image";
@@ -45,6 +45,8 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
   const theme = useTheme();
   const router = useRouter();
   const userSelector = useSelector((store: any) => store.admin);
+  const [userOpen, setUserOpen] = React.useState<boolean>(false);
+  const [newsOpen, setNewsOpen] = React.useState<boolean>(false);
 
   return (
     <Drawer
@@ -81,39 +83,78 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
       <Divider />
 
       <List>
-        <Link
+        {/* <Link
           href="/admin/user"
           style={{ textDecoration: "none", color: "#000000DE" }}
           passHref
+        > */}
+        <ListItem
+          button
+          onClick={() => setUserOpen(!userOpen)}
+          className={
+            router.pathname === "/admin/user"
+              ? "Mui-selected"
+              : router.pathname === "/admin/user/edit"
+              ? "Mui-selected"
+              : router.pathname === "/admin/user/add"
+              ? "Mui-selected"
+              : ""
+          }
         >
-          <ListItem
-            button
-            className={
-              router.pathname === "/admin/user"
-                ? "Mui-selected"
-                : router.pathname === "/admin/user/edit"
-                ? "Mui-selected"
-                : router.pathname === "/admin/user/add"
-                ? "Mui-selected"
-                : ""
-            }
+          <ListItemIcon>
+            <PersonIcon />
+          </ListItemIcon>
+          <ListItemText primary="User" />
+        </ListItem>
+
+        <Collapse
+          key={0}
+          in={
+            router.pathname === "/admin/user"
+              ? true
+              : router.pathname === "/admin/user/edit"
+              ? true
+              : router.pathname === "/admin/user/add"
+              ? true
+              : userOpen
+          }
+          timeout="auto"
+          unmountOnExit
+        >
+          <List
+            component="li"
+            disablePadding
+            key={0}
+            style={{ display: "flex", justifyContent: "center" }}
           >
-            <ListItemIcon>
-              <PersonIcon />
-            </ListItemIcon>
-            <ListItemText primary="User" />
-          </ListItem>
-        </Link>
+            <Link
+              href="/admin/user"
+              style={{
+                textDecoration: router.pathname == "/admin/user" ? "" : "none",
+                color: "#000000DE",
+              }}
+              passHref
+            >
+              <ListItem button key={0}>
+                <ListItemIcon>
+                  <PersonIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText key={0} primary="User TH" />
+              </ListItem>
+            </Link>
+          </List>
+        </Collapse>
+        {/* </Link> */}
       </List>
 
       <List>
         <Link
-          href="/admin/news"
+          href="#"
           style={{ textDecoration: "none", color: "#000000DE" }}
           passHref
         >
           <ListItem
-            button
+            onClick={() => setNewsOpen(!newsOpen)}
             className={
               router.pathname === "/admin/news"
                 ? "Mui-selected"
@@ -129,6 +170,45 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
             </ListItemIcon>
             <ListItemText primary="News" />
           </ListItem>
+
+          <Collapse
+            key={0}
+            in={
+              router.pathname === "/admin/news"
+                ? true
+                : router.pathname === "/admin/news/edit"
+                ? true
+                : router.pathname === "/admin/news/add"
+                ? true
+                : newsOpen
+            }
+            timeout="auto"
+            unmountOnExit
+          >
+            <List
+              component="li"
+              disablePadding
+              key={0}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Link
+                href="/admin/news"
+                style={{
+                  textDecoration:
+                    router.pathname == "/admin/news" ? "" : "none",
+                  color: "#000000DE",
+                }}
+                passHref
+              >
+                <ListItem key={0}>
+                  <ListItemIcon>
+                    <NewspaperIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText key={0} primary="JP" />
+                </ListItem>
+              </Link>
+            </List>
+          </Collapse>
         </Link>
       </List>
     </Drawer>

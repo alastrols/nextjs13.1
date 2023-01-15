@@ -5,7 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head />
       <body>
-        <title></title>
+        <title>ZENIYA (THAILAND) CO.,LTD.</title>
         <meta name="description" content="SEO Desctiption" />
         <Main />
         <NextScript />
