@@ -20,7 +20,7 @@ import Swal from "sweetalert2";
 import dayjs, { Dayjs } from "dayjs";
 import { appDispatch, appSelector } from "@/store/hooks";
 import { uploadUser } from "@/features/admin/user";
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import axios from "axios";
 import { getCookie } from "cookies-next";
 const initialValuesExcel: any = {
@@ -159,7 +159,12 @@ const showFormExcel = ({ values, setFieldValue }: FormikProps<any>) => {
             Upload
           </Button>
 
-          <Button variant="contained" color="error" fullWidth>
+          <Button
+            variant="contained"
+            color="error"
+            fullWidth
+            onClick={() => router.push("/admin/user")}
+          >
             Cancel
           </Button>
         </CardActions>

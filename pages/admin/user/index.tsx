@@ -29,8 +29,6 @@ import {
   EnhancedTableToolbarProps,
 } from "@/components/table/admin/user/TableHeads";
 import { getUser, deleteUser } from "@/features/admin/user";
-import * as Excel from "exceljs";
-import { saveAs } from "file-saver";
 import saveAsExcel from "@/features/admin/user/export";
 
 const User: NextPage = () => {
@@ -131,13 +129,9 @@ const User: NextPage = () => {
   //   row.font = {
   //     bold: true,
   //   };
-
-  //   let position: number = 2;
-  //   // ws.getCell(`G3`).value = { formula: `G1+G2`, date1904: false };
   //   await Promise.all(
   //     rows.map(async (item: any, index: any): Promise<any> => {
   //       const no = index + 1;
-  //       const no2 = index + 2;
   //       const content: any = ws.addRow([
   //         no,
   //         item.fullname,
@@ -147,7 +141,6 @@ const User: NextPage = () => {
   //         item.created_at,
   //       ]);
   //       content.height = 20;
-  //       position++;
   //     })
   //   );
   //   ws.eachRow(function (row) {
@@ -294,7 +287,7 @@ const User: NextPage = () => {
           </Button>
 
           <Button
-            sx={{ ml: 2 }}
+            sx={{ ml: 2, mb: 1 }}
             variant="contained"
             color="secondary"
             onClick={() => router.push("/admin/user/upload")}
@@ -303,7 +296,7 @@ const User: NextPage = () => {
           </Button>
 
           <Button
-            sx={{ ml: 2, flexGrow: 1 }}
+            sx={{ ml: 2, mb: 1, flexGrow: 1 }}
             onClick={exports}
             variant="contained"
             color="success"

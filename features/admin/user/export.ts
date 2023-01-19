@@ -25,9 +25,6 @@ export default async function saveAsExcel({ rows }: any) {
   row.font = {
     bold: true,
   };
-
-  let position: number = 2;
-  // ws.getCell(`G3`).value = { formula: `G1+G2`, date1904: false };
   await Promise.all(
     rows.map(async (item: any, index: any): Promise<any> => {
       const no = index + 1;
@@ -40,7 +37,6 @@ export default async function saveAsExcel({ rows }: any) {
         item.level,
       ]);
       content.height = 20;
-      position++;
     })
   );
   ws.eachRow(function (row) {
