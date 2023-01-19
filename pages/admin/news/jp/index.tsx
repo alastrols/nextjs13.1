@@ -192,7 +192,7 @@ const News: NextPage = () => {
             id="tableTitle"
             component="div"
           >
-            News
+            News JP
           </Typography>
         )}
         {numSelected > 0 ? (

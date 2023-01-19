@@ -29,6 +29,9 @@ import {
   EnhancedTableToolbarProps,
 } from "@/components/table/admin/user/TableHeads";
 import { getUser, deleteUser } from "@/features/admin/user";
+import * as Excel from "exceljs";
+import { saveAs } from "file-saver";
+import saveAsExcel from "@/features/admin/user/export";
 
 const User: NextPage = () => {
   const dispatch = appDispatch();
@@ -100,6 +103,59 @@ const User: NextPage = () => {
       }
     });
   };
+
+  const exports = () => {
+    saveAsExcel({ rows });
+  };
+  // const saveAsExcel = async () => {
+  //   const wb = new Excel.Workbook();
+
+  //   const ws = wb.addWorksheet();
+
+  //   ws.columns = [
+  //     { width: 5 },
+  //     { width: 25 },
+  //     { width: 20 },
+  //     { width: 20 },
+  //     { width: 20 },
+  //     { width: 20 },
+  //   ];
+  //   const row: any = ws.addRow([
+  //     "No",
+  //     "Fullname",
+  //     "Username",
+  //     "Email",
+  //     "Department Name",
+  //     "CreatedAt",
+  //   ]);
+  //   row.font = {
+  //     bold: true,
+  //   };
+
+  //   let position: number = 2;
+  //   // ws.getCell(`G3`).value = { formula: `G1+G2`, date1904: false };
+  //   await Promise.all(
+  //     rows.map(async (item: any, index: any): Promise<any> => {
+  //       const no = index + 1;
+  //       const no2 = index + 2;
+  //       const content: any = ws.addRow([
+  //         no,
+  //         item.fullname,
+  //         item.username,
+  //         item.email,
+  //         item.dept_name,
+  //         item.created_at,
+  //       ]);
+  //       content.height = 20;
+  //       position++;
+  //     })
+  //   );
+  //   ws.eachRow(function (row) {
+  //     row.alignment = { vertical: "middle", horizontal: "center" };
+  //   });
+  //   const buf = await wb.xlsx.writeBuffer();
+  //   await saveAs(new Blob([buf]), "user.xlsx");
+  // };
 
   // *************************** Action ***************************
 
@@ -244,6 +300,15 @@ const User: NextPage = () => {
             onClick={() => router.push("/admin/user/upload")}
           >
             Upload User by excel
+          </Button>
+
+          <Button
+            sx={{ ml: 2, flexGrow: 1 }}
+            onClick={exports}
+            variant="contained"
+            color="success"
+          >
+            Export to Excel
           </Button>
 
           <TableContainer>

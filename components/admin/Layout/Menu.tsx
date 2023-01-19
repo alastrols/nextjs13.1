@@ -124,6 +124,18 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
                 ? "Mui-selected"
                 : router.pathname === "/admin/news/jp/add"
                 ? "Mui-selected"
+                : router.pathname === "/admin/news/en"
+                ? "Mui-selected"
+                : router.pathname === "/admin/news/en/edit"
+                ? "Mui-selected"
+                : router.pathname === "/admin/news/en/add"
+                ? "Mui-selected"
+                : router.pathname === "/admin/news/th"
+                ? "Mui-selected"
+                : router.pathname === "/admin/news/th/edit"
+                ? "Mui-selected"
+                : router.pathname === "/admin/news/th/add"
+                ? "Mui-selected"
                 : ""
             }
           >
@@ -141,6 +153,18 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
                 : router.pathname === "/admin/news/jp/edit"
                 ? true
                 : router.pathname === "/admin/news/jp/add"
+                ? true
+                : router.pathname === "/admin/news/en"
+                ? true
+                : router.pathname === "/admin/news/en/edit"
+                ? true
+                : router.pathname === "/admin/news/en/add"
+                ? true
+                : router.pathname === "/admin/news/th"
+                ? true
+                : router.pathname === "/admin/news/th/edit"
+                ? true
+                : router.pathname === "/admin/news/th/add"
                 ? true
                 : newsOpen
             }
@@ -173,6 +197,66 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
                     <NewspaperIcon fontSize="small" />
                   </ListItemIcon>
                   <ListItemText key={0} primary="JP" />
+                </ListItem>
+              </Link>
+            </List>
+
+            <List
+              component="li"
+              disablePadding
+              key={1}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Link
+                href="/admin/news/en"
+                style={{
+                  textDecoration:
+                    router.pathname == "/admin/news/en"
+                      ? ""
+                      : router.pathname == "/admin/news/en/add"
+                      ? ""
+                      : router.pathname == "/admin/news/en/edit"
+                      ? ""
+                      : "none",
+                  color: "#000000DE",
+                }}
+                passHref
+              >
+                <ListItem key={1}>
+                  <ListItemIcon>
+                    <NewspaperIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText key={1} primary="EN" />
+                </ListItem>
+              </Link>
+            </List>
+
+            <List
+              component="li"
+              disablePadding
+              key={2}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Link
+                href="/admin/news/th"
+                style={{
+                  textDecoration:
+                    router.pathname == "/admin/news/th"
+                      ? ""
+                      : router.pathname == "/admin/news/th/add"
+                      ? ""
+                      : router.pathname == "/admin/news/th/edit"
+                      ? ""
+                      : "none",
+                  color: "#000000DE",
+                }}
+                passHref
+              >
+                <ListItem key={2}>
+                  <ListItemIcon>
+                    <NewspaperIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText key={2} primary="TH" />
                 </ListItem>
               </Link>
             </List>
