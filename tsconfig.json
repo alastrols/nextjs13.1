@@ -21,8 +21,8 @@
       "@/features/*": ["features/*"],
       "@/components/*": ["components/*"],
       "@/models/*": ["models/*"],
-      "@/assets/*": ["assets/*"]
-      // "@/utils/*": ["utils/*"],
+      "@/assets/*": ["assets/*"],
+      "@/utils/*": ["utils/*"]
       // "@/services/*": ["services/*"]
     }
   },

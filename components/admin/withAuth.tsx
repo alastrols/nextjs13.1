@@ -26,14 +26,14 @@ const withAuth = (WrappedComponent: React.FC) => (props: any) => {
     }
   } else {
     if (isAuthenticated) {
-      router.push(`/admin/user`); // default page after login
+      router.push(`/admin/news/jp`); // default page after login
       return null;
     }
   }
 
   if (route == "/admin") {
     if (isAuthenticated) {
-      router.push(`/admin/user`);
+      router.push(`/admin/news/jp`);
       return null;
     } else {
       router.push(`/admin/login`);

@@ -83,68 +83,30 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
       <Divider />
 
       <List>
-        {/* <Link
+        <Link
           href="/admin/user"
           style={{ textDecoration: "none", color: "#000000DE" }}
           passHref
-        > */}
-        <ListItem
-          button
-          onClick={() => setUserOpen(!userOpen)}
-          className={
-            router.pathname === "/admin/user"
-              ? "Mui-selected"
-              : router.pathname === "/admin/user/edit"
-              ? "Mui-selected"
-              : router.pathname === "/admin/user/add"
-              ? "Mui-selected"
-              : ""
-          }
         >
-          <ListItemIcon>
-            <PersonIcon />
-          </ListItemIcon>
-          <ListItemText primary="User" />
-        </ListItem>
-
-        <Collapse
-          key={0}
-          in={
-            router.pathname === "/admin/user"
-              ? true
-              : router.pathname === "/admin/user/edit"
-              ? true
-              : router.pathname === "/admin/user/add"
-              ? true
-              : userOpen
-          }
-          timeout="auto"
-          unmountOnExit
-        >
-          <List
-            component="li"
-            disablePadding
-            key={0}
-            style={{ display: "flex", justifyContent: "center" }}
+          <ListItem
+            button
+            onClick={() => setUserOpen(!userOpen)}
+            className={
+              router.pathname === "/admin/user"
+                ? "Mui-selected"
+                : router.pathname === "/admin/user/edit"
+                ? "Mui-selected"
+                : router.pathname === "/admin/user/add"
+                ? "Mui-selected"
+                : ""
+            }
           >
-            <Link
-              href="/admin/user"
-              style={{
-                textDecoration: router.pathname == "/admin/user" ? "" : "none",
-                color: "#000000DE",
-              }}
-              passHref
-            >
-              <ListItem button key={0}>
-                <ListItemIcon>
-                  <PersonIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText key={0} primary="User TH" />
-              </ListItem>
-            </Link>
-          </List>
-        </Collapse>
-        {/* </Link> */}
+            <ListItemIcon>
+              <PersonIcon />
+            </ListItemIcon>
+            <ListItemText primary="User" />
+          </ListItem>
+        </Link>
       </List>
 
       <List>
@@ -156,11 +118,11 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
           <ListItem
             onClick={() => setNewsOpen(!newsOpen)}
             className={
-              router.pathname === "/admin/news"
+              router.pathname === "/admin/news/jp"
                 ? "Mui-selected"
-                : router.pathname === "/admin/user/edit"
+                : router.pathname === "/admin/news/jp/edit"
                 ? "Mui-selected"
-                : router.pathname === "/admin/user/add"
+                : router.pathname === "/admin/news/jp/add"
                 ? "Mui-selected"
                 : ""
             }
@@ -174,11 +136,11 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
           <Collapse
             key={0}
             in={
-              router.pathname === "/admin/news"
+              router.pathname === "/admin/news/jp"
                 ? true
-                : router.pathname === "/admin/news/edit"
+                : router.pathname === "/admin/news/jp/edit"
                 ? true
-                : router.pathname === "/admin/news/add"
+                : router.pathname === "/admin/news/jp/add"
                 ? true
                 : newsOpen
             }
@@ -192,10 +154,16 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
               style={{ display: "flex", justifyContent: "center" }}
             >
               <Link
-                href="/admin/news"
+                href="/admin/news/jp"
                 style={{
                   textDecoration:
-                    router.pathname == "/admin/news" ? "" : "none",
+                    router.pathname == "/admin/news/jp"
+                      ? ""
+                      : router.pathname == "/admin/news/jp/add"
+                      ? ""
+                      : router.pathname == "/admin/news/jp/edit"
+                      ? ""
+                      : "none",
                   color: "#000000DE",
                 }}
                 passHref

@@ -6,4 +6,6 @@
 # Node artifact files
 node_modules/
 .next/
+.swc/
 server/node_modules/
+server/.env

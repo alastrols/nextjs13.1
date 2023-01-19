@@ -1,11 +1,9 @@
 import withAuth from "@/components/admin/withAuth";
-import { GetServerSideProps, NextPage } from "next/types";
+import { NextPage } from "next/types";
 import React, { useState } from "react";
 import { appDispatch, appSelector } from "@/store/hooks";
 import Layout from "@/components/admin/Layout/Layout";
-import { wrapper } from "@/store/store";
-import Link from "next/link";
-import { TextField } from "@mui/material";
+import { Button, Stack, TextField } from "@mui/material";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -15,37 +13,101 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import Toolbar from "@mui/material/Toolbar";
 import { alpha } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
 import Swal from "sweetalert2";
+import router from "next/router";
 // Table
 import { getComparator, stableSort, Order } from "@/components/table/Table";
-import { EnhancedTableHead } from "@/components/table/admin/user/TableHeads";
-import { EnhancedTableToolbarProps } from "@/components/table/admin/user/TableToolbar";
-import { rows, Data } from "@/components/table/admin/user/Data";
+import {
+  EnhancedTableHead,
+  EnhancedTableToolbarProps,
+} from "@/components/table/admin/user/TableHeads";
+import { getUser, deleteUser } from "@/features/admin/user";
 
-const Index: NextPage = ({ message }: any) => {
+const User: NextPage = () => {
   const dispatch = appDispatch();
   const [searched, setSearched] = React.useState<string>("");
-  // const { data, pending, error } = appSelector((state) => state.kanyeQuote);
-
+  const { data } = appSelector((state) => state.user);
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<any>("");
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  var rows: any = data ?? [];
+
+  // *************************** Use Effect ***************************
+  React.useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    dispatch(getUser(searched));
+  }, [dispatch, searched]);
+  // *************************** Use Effect ***************************
+
+  // *************************** Action ***************************
+  const Delete = (id: any) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result: any) => {
+      setSelected([]);
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your data has been deleted.", "success").then(
+          function () {
+            dispatch(deleteUser(id)).then((result: any) => {
+              dispatch(getUser());
+            });
+          }
+        );
+      }
+    });
+  };
+  const DeleteAll = (id: any) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result: any) => {
+      setSelected([]);
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", "Your data has been deleted.", "success").then(
+          function () {
+            dispatch(deleteUser(id)).then((result: any) => {
+              if (result.payload.status == "success") {
+                dispatch(getUser());
+              }
+            });
+          }
+        );
+      }
+    });
+  };
+
+  // *************************** Action ***************************
+
+  // *************************** Fix Table ***************************
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data
+    property: keyof any
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -54,7 +116,7 @@ const Index: NextPage = ({ message }: any) => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n: any) => n.name);
+      const newSelected = rows.map((n: any) => n.user_id);
       setSelected(newSelected);
       return;
     }
@@ -130,7 +192,7 @@ const Index: NextPage = ({ message }: any) => {
             id="tableTitle"
             component="div"
           >
-            Nutrition
+            User
           </Typography>
         )}
         {numSelected > 0 ? (
@@ -147,34 +209,7 @@ const Index: NextPage = ({ message }: any) => {
       </Toolbar>
     );
   }
-
-  const DeleteAll = (id: any) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    }).then((result: any) => {
-      if (result.isConfirmed) {
-        Swal.fire("Deleted!", "Your data has been deleted.", "success").then(
-          function () {
-            console.log(id);
-            //   dispatch(deleteAllAccount(id));
-            setSelected([]);
-            //   dispatch(getAccount());
-          }
-        );
-      }
-    });
-  };
-
-  React.useEffect(() => {
-    // dispatch(getAccount(searched));
-  }, [dispatch, searched]);
-
+  // *************************** Fix Table ***************************
   return (
     <Layout>
       <TextField
@@ -183,16 +218,34 @@ const Index: NextPage = ({ message }: any) => {
         label="Search..."
         onChange={(e: React.ChangeEvent<any>) => {
           e.preventDefault();
-          console.log(e.target.value);
           setSearched(e.target.value);
         }}
       />
+
       <Box sx={{ width: "100%", mt: 3 }}>
         <Paper sx={{ width: "100%", mb: 2 }}>
           <EnhancedTableToolbar
             numSelected={selected.length}
             valSelected={selected}
           />
+          <Button
+            sx={{ ml: 2, mb: 1 }}
+            variant="contained"
+            color="primary"
+            onClick={() => router.push("/admin/user/add")}
+          >
+            Add User
+          </Button>
+
+          <Button
+            sx={{ ml: 2 }}
+            variant="contained"
+            color="secondary"
+            onClick={() => router.push("/admin/user/upload")}
+          >
+            Upload User by excel
+          </Button>
+
           <TableContainer>
             <Table
               sx={{ minWidth: 750 }}
@@ -208,46 +261,76 @@ const Index: NextPage = ({ message }: any) => {
                 rowCount={rows.length}
               />
               <TableBody>
-                {stableSort(rows, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: any, index) => {
-                    const isItemSelected = isSelected(row.name);
-                    const labelId = `enhanced-table-checkbox-${index}`;
+                {rows.length > 0
+                  ? stableSort(rows, getComparator(order, orderBy))
+                      .slice(
+                        page * rowsPerPage,
+                        page * rowsPerPage + rowsPerPage
+                      )
+                      .map((row: any, index) => {
+                        const isItemSelected = isSelected(row.user_id);
+                        const labelId = `enhanced-table-checkbox-${index}`;
 
-                    return (
-                      <TableRow
-                        hover
-                        onClick={(event) => handleClick(event, row.name)}
-                        role="checkbox"
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={row.name}
-                        selected={isItemSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            color="primary"
-                            checked={isItemSelected}
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                          />
-                        </TableCell>
-                        <TableCell
-                          component="th"
-                          id={labelId}
-                          scope="row"
-                          padding="none"
-                        >
-                          {row.name}
-                        </TableCell>
-                        <TableCell align="right">{row.calories}</TableCell>
-                        <TableCell align="right">{row.fat}</TableCell>
-                        <TableCell align="right">{row.carbs}</TableCell>
-                        <TableCell align="right">{row.protein}</TableCell>
-                      </TableRow>
-                    );
-                  })}
+                        return (
+                          <TableRow
+                            hover
+                            onClick={(event) => handleClick(event, row.user_id)}
+                            role="checkbox"
+                            aria-checked={isItemSelected}
+                            tabIndex={-1}
+                            key={row.user_id}
+                            selected={isItemSelected}
+                          >
+                            <TableCell padding="checkbox" align="center">
+                              <Checkbox
+                                color="primary"
+                                checked={isItemSelected}
+                                inputProps={{
+                                  "aria-labelledby": labelId,
+                                }}
+                              />
+                            </TableCell>
+                            <TableCell align="center">{row.fullname}</TableCell>
+                            <TableCell align="center">{row.username}</TableCell>
+                            <TableCell align="center">{row.email}</TableCell>
+                            <TableCell align="center">
+                              {row.status == "active" ? "Active" : "In Active"}
+                            </TableCell>
+                            <TableCell align="center">{row.level}</TableCell>
+                            <TableCell align="center">
+                              <Stack
+                                direction="row"
+                                alignItems="center"
+                                justifyContent="center"
+                                spacing={0}
+                              >
+                                <IconButton
+                                  color="primary"
+                                  aria-label="edit"
+                                  size="large"
+                                  onClick={() =>
+                                    router.push(
+                                      `/admin/user/edit?id=${row.user_id}`
+                                    )
+                                  }
+                                >
+                                  <EditIcon fontSize="inherit" />
+                                </IconButton>
+
+                                <IconButton
+                                  color="error"
+                                  aria-label="delete"
+                                  size="large"
+                                  onClick={() => Delete(row.user_id)}
+                                >
+                                  <DeleteIcon fontSize="inherit" />
+                                </IconButton>
+                              </Stack>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })
+                  : ""}
               </TableBody>
             </Table>
           </TableContainer>
@@ -266,13 +349,16 @@ const Index: NextPage = ({ message }: any) => {
   );
 };
 
-export const getStaticProps = wrapper.getStaticProps(
-  (store) =>
-    async ({ dispatch, req, res }: any) => {
-      return {
-        props: { message: "Hello world!" },
-      };
-    }
-);
+// export const getStaticProps: any = wrapper.getStaticProps(
+//   (store) => async () => {
+//     const data: any = await store.dispatch(getUser());
+//     console.log(data);
+//     return {
+//       props: {
+//         initData: data.payload,
+//       },
+//     };
+//   }
+// );
 
-export default withAuth(Index);
+export default withAuth(User);

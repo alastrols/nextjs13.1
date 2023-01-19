@@ -15,14 +15,14 @@ import storage from "redux-persist/lib/storage";
 import { counterReducer } from "@/features/counter";
 import { kanyeReducer } from "@/features/random";
 import { loginReducer } from "@/features/admin/login";
-import { createLogger } from "redux-logger";
-import { composeWithDevTools } from "redux-devtools-extension";
-import createSagaMiddleware from "redux-saga";
-import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+import { newsReducer } from "@/features/admin/news";
+import { userReducer } from "@/features/admin/user";
 const combinedReducer: any = combineReducers({
   counter: counterReducer,
   kanyeQuote: kanyeReducer,
   login: loginReducer,
+  news: newsReducer,
+  user: userReducer,
 });
 
 // BINDING MIDDLEWARE
@@ -58,7 +58,7 @@ const makeStore: any = ({ isServer }: any) => {
     const persistConfig = {
       key: "root",
       storage,
-      blacklist: ["login"],
+      whitelist: ["counter", "kanyeQuote"],
     };
 
     const persistedReducer = persistReducer(persistConfig, reducer);
@@ -72,35 +72,8 @@ const makeStore: any = ({ isServer }: any) => {
   }
 };
 
-// const makeStore = ({ isServer }: any) => {
-//   if (isServer) {
-//     return createStore(combinedReducer, bindMiddleware([thunkMiddleware]));
-//   } else {
-//     const { persistStore, persistReducer } = require("redux-persist");
-
-//     const storage =
-//       typeof window !== "undefined"
-//         ? createWebStorage("local")
-//         : createNoopStorage();
-//     const persistConfig = {
-//       key: "myProject",
-//       blacklist: ["login"],
-//       storage,
-//     };
-
-//     const persistedReducer = persistReducer(persistConfig, combinedReducer);
-//     const store: any = createStore(
-//       persistedReducer,
-//       bindMiddleware([thunkMiddleware])
-//     );
-
-//     store.__persistor = persistStore(store);
-
-//     return store;
-//   }
-// };
-
 type Store = ReturnType<typeof makeStore>;
+export type AppState = ReturnType<Store["getState"]>;
 export type AppDispatch = Store["dispatch"];
 export type RootState = ReturnType<Store["getState"]>;
 export type AppThunk<ReturnType = void> = ThunkAction<
@@ -109,6 +82,6 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
-export const wrapper = createWrapper(makeStore, {
+export const wrapper = createWrapper<Store>(makeStore, {
   debug: false,
 });

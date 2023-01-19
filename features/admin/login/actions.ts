@@ -18,6 +18,7 @@ export const login = createAsyncThunk(
 
 export const getSession = createAsyncThunk("auth/session", async () => {
   const url = process.env.NEXT_PUBLIC_BASE_URL_API;
+
   const response = await axios.get(`${url}/profile`, {
     headers: { "access-token": `Bearer ${getCookie("access-token")}` },
   });
@@ -26,5 +27,5 @@ export const getSession = createAsyncThunk("auth/session", async () => {
 
 export const logout = createAsyncThunk("auth/logout", async () => {
   deleteCookie("access-token");
-  Router.push("/admin/login");
+  location.href = "/admin/login";
 });
