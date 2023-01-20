@@ -17,12 +17,14 @@ import { kanyeReducer } from "@/features/random";
 import { loginReducer } from "@/features/admin/login";
 import { newsReducer } from "@/features/admin/news";
 import { userReducer } from "@/features/admin/user";
+import { contactReducer } from "@/features/admin/contact";
 const combinedReducer: any = combineReducers({
   counter: counterReducer,
   kanyeQuote: kanyeReducer,
   login: loginReducer,
   news: newsReducer,
   user: userReducer,
+  contact: contactReducer,
 });
 
 // BINDING MIDDLEWARE

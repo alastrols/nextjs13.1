@@ -103,6 +103,7 @@ app.use("/api/profile", require("./route/api/profile"));
 app.use("/api/banner", require("./route/api/banner"));
 app.use("/api/news", require("./route/api/news"));
 app.use("/api/user", require("./route/api/user"));
+app.use("/api/contact", require("./route/api/contact"));
 
 app.get("/api/image/:image_path/:img_name", function (req, res) {
   var img_name = req.params.img_name;

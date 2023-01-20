@@ -16,13 +16,10 @@ import Link from "next/link";
 import { Layers, BarChart, Person } from "@mui/icons-material";
 import ImageIcon from "@mui/icons-material/Image";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
-import BookIcon from "@mui/icons-material/Book";
+
 import { useRouter } from "next/router";
 import PersonIcon from "@mui/icons-material/Person";
-import SummarizeIcon from "@mui/icons-material/Summarize";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import StickyNote2Icon from "@mui/icons-material/StickyNote2";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 const drawerWidth = 240;
@@ -261,6 +258,27 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
               </Link>
             </List>
           </Collapse>
+        </Link>
+      </List>
+
+      <List>
+        <Link
+          href="/admin/contact"
+          style={{ textDecoration: "none", color: "#000000DE" }}
+          passHref
+        >
+          <ListItem
+            button
+            onClick={() => setUserOpen(!userOpen)}
+            className={
+              router.pathname === "/admin/contact" ? "Mui-selected" : ""
+            }
+          >
+            <ListItemIcon>
+              <ContactMailIcon />
+            </ListItemIcon>
+            <ListItemText primary="Contact" />
+          </ListItem>
         </Link>
       </List>
     </Drawer>
