@@ -18,6 +18,7 @@ import { loginReducer } from "@/features/admin/login";
 import { newsReducer } from "@/features/admin/news";
 import { userReducer } from "@/features/admin/user";
 import { contactReducer } from "@/features/admin/contact";
+import { bannerReducer } from "@/features/admin/banner";
 const combinedReducer: any = combineReducers({
   counter: counterReducer,
   kanyeQuote: kanyeReducer,
@@ -25,6 +26,7 @@ const combinedReducer: any = combineReducers({
   news: newsReducer,
   user: userReducer,
   contact: contactReducer,
+  banner: bannerReducer,
 });
 
 // BINDING MIDDLEWARE
@@ -84,6 +86,4 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
-export const wrapper = createWrapper<Store>(makeStore, {
-  debug: false,
-});
+export const wrapper = createWrapper<Store>(makeStore);

@@ -21,23 +21,26 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
 import Swal from "sweetalert2";
+import Image from "next/image";
 import router from "next/router";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 // Table
 import { getComparator, stableSort, Order } from "@/components/table/Table";
 import {
   EnhancedTableHead,
   EnhancedTableToolbarProps,
-} from "@/components/table/admin/news/TableHeads";
+} from "@/components/table/admin/banner/TableHeads";
 import {
-  getNewsTH,
-  deleteNewsTH,
-  deleteAllNewsTH,
-} from "@/features/admin/news";
+  getBannerTH,
+  deleteBannerTH,
+  deleteAllBannerTH,
+  sortableBannerTH,
+} from "@/features/admin/banner";
 
-const News: NextPage = () => {
+const Banner: NextPage = () => {
   const dispatch = appDispatch();
   const [searched, setSearched] = React.useState<string>("");
-  const { dataTH } = appSelector((state) => state.news);
+  const { dataTH } = appSelector((state) => state.banner);
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<any>("");
   const [selected, setSelected] = useState<readonly string[]>([]);
@@ -45,19 +48,41 @@ const News: NextPage = () => {
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  var rows: any = dataTH ?? [];
+  const rows: any = dataTH ?? [];
 
   // *************************** Use Effect ***************************
   React.useEffect(() => {
-    dispatch(getNewsTH());
+    dispatch(getBannerTH());
   }, [dispatch]);
 
   React.useEffect(() => {
-    dispatch(getNewsTH(searched));
+    dispatch(getBannerTH(searched));
   }, [dispatch, searched]);
   // *************************** Use Effect ***************************
 
   // *************************** Action ***************************
+  const onDragEnd = (result: any) => {
+    if (!result.destination) {
+      return;
+    }
+    let movedItems: any = reorder(
+      rows,
+      result.source.index,
+      result.destination.index
+    );
+    dispatch(sortableBannerTH(movedItems)).then((value: any) => {
+      dispatch(getBannerTH(searched));
+    });
+    dispatch(getBannerTH(searched));
+  };
+  const reorder = (list: any, startIndex: any, endIndex: any) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+
   const Delete = (id: any) => {
     Swal.fire({
       title: "Are you sure?",
@@ -72,8 +97,8 @@ const News: NextPage = () => {
       if (result.isConfirmed) {
         Swal.fire("Deleted!", "Your data has been deleted.", "success").then(
           function () {
-            dispatch(deleteNewsTH(id)).then((result: any) => {
-              dispatch(getNewsTH());
+            dispatch(deleteBannerTH(id)).then((result: any) => {
+              dispatch(getBannerTH());
             });
           }
         );
@@ -94,9 +119,9 @@ const News: NextPage = () => {
       if (result.isConfirmed) {
         Swal.fire("Deleted!", "Your data has been deleted.", "success").then(
           function () {
-            dispatch(deleteAllNewsTH(id)).then((result: any) => {
+            dispatch(deleteAllBannerTH(id)).then((result: any) => {
               if (result.payload.status == "success") {
-                dispatch(getNewsTH());
+                dispatch(getBannerTH());
               }
             });
           }
@@ -120,7 +145,7 @@ const News: NextPage = () => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n: any) => n.news_id);
+      const newSelected = rows.map((n: any) => n.banner_id);
       setSelected(newSelected);
       return;
     }
@@ -147,8 +172,8 @@ const News: NextPage = () => {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+  const handleChangePage = (event: unknown, bannerPage: number) => {
+    setPage(bannerPage);
   };
 
   const handleChangeRowsPerPage = (
@@ -196,7 +221,7 @@ const News: NextPage = () => {
             id="tableTitle"
             component="div"
           >
-            News TH
+            Banner TH
           </Typography>
         )}
         {numSelected > 0 ? (
@@ -236,9 +261,9 @@ const News: NextPage = () => {
             sx={{ ml: 2, mb: 1 }}
             variant="contained"
             color="primary"
-            onClick={() => router.push("/admin/news/th/add")}
+            onClick={() => router.push("/admin/banner/th/add")}
           >
-            Add News
+            Add Banner
           </Button>
           <TableContainer>
             <Table
@@ -254,82 +279,124 @@ const News: NextPage = () => {
                 onRequestSort={handleRequestSort}
                 rowCount={rows.length}
               />
-              <TableBody>
-                {rows.length > 0
-                  ? stableSort(rows, getComparator(order, orderBy))
-                      .slice(
-                        page * rowsPerPage,
-                        page * rowsPerPage + rowsPerPage
-                      )
-                      .map((row: any, index) => {
-                        const isItemSelected = isSelected(row.news_id);
-                        const labelId = `enhanced-table-checkbox-${index}`;
-
-                        return (
-                          <TableRow
-                            hover
-                            onClick={(event) => handleClick(event, row.news_id)}
-                            role="checkbox"
-                            aria-checked={isItemSelected}
-                            tabIndex={-1}
-                            key={row.news_id}
-                            selected={isItemSelected}
-                          >
-                            <TableCell padding="checkbox" align="center">
-                              <Checkbox
-                                color="primary"
-                                checked={isItemSelected}
-                                inputProps={{
-                                  "aria-labelledby": labelId,
-                                }}
-                              />
-                            </TableCell>
-                            <TableCell
-                              component="th"
-                              id={labelId}
-                              scope="row"
-                              padding="none"
-                              align="center"
-                            >
-                              {row.post_date}
-                            </TableCell>
-                            <TableCell align="center">{row.topic}</TableCell>
-                            <TableCell align="center">{row.status}</TableCell>
-                            <TableCell align="center">
-                              <Stack
-                                direction="row"
-                                alignItems="center"
-                                justifyContent="center"
-                                spacing={0}
-                              >
-                                <IconButton
-                                  color="primary"
-                                  aria-label="edit"
-                                  size="large"
-                                  onClick={() =>
-                                    router.push(
-                                      `/admin/news/th/edit?id=${row.news_id}`
-                                    )
-                                  }
+              <DragDropContext onDragEnd={onDragEnd} key={0}>
+                <Droppable droppableId="droppable" key={0}>
+                  {(provided, snapshot) => (
+                    <TableBody
+                      key={0}
+                      {...provided.droppableProps}
+                      ref={provided.innerRef}
+                    >
+                      {rows.length > 0
+                        ? stableSort(rows, getComparator(order, orderBy))
+                            .slice(
+                              page * rowsPerPage,
+                              page * rowsPerPage + rowsPerPage
+                            )
+                            .map((row: any, index) => {
+                              const isItemSelected = isSelected(row.banner_id);
+                              const labelId = `enhanced-table-checkbox-${index}`;
+                              return (
+                                <Draggable
+                                  key={row.banner_id}
+                                  draggableId={"q-" + row.banner_id}
+                                  index={index}
                                 >
-                                  <EditIcon fontSize="inherit" />
-                                </IconButton>
+                                  {(provided, snapshot) => (
+                                    <TableRow
+                                      ref={provided.innerRef}
+                                      {...provided.draggableProps}
+                                      {...provided.dragHandleProps}
+                                      hover
+                                      onClick={(event) =>
+                                        handleClick(event, row.banner_id)
+                                      }
+                                      role="checkbox"
+                                      aria-checked={isItemSelected}
+                                      tabIndex={-1}
+                                      key={row.banner_id}
+                                      selected={isItemSelected}
+                                    >
+                                      <TableCell
+                                        padding="checkbox"
+                                        align="center"
+                                      >
+                                        <Checkbox
+                                          color="primary"
+                                          checked={isItemSelected}
+                                          inputProps={{
+                                            "aria-labelledby": labelId,
+                                          }}
+                                        />
+                                      </TableCell>
+                                      <TableCell
+                                        component="th"
+                                        id={labelId}
+                                        scope="row"
+                                        padding="none"
+                                        align="center"
+                                      >
+                                        {row.post_date}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {row.topic}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Image
+                                          loading="lazy"
+                                          src={row.file}
+                                          alt={row.topic}
+                                          width={200}
+                                          height={100}
+                                        />
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {row.status == "active"
+                                          ? "Active"
+                                          : "In Active"}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        <Stack
+                                          direction="row"
+                                          alignItems="center"
+                                          justifyContent="center"
+                                          spacing={0}
+                                        >
+                                          <IconButton
+                                            color="primary"
+                                            aria-label="edit"
+                                            size="large"
+                                            onClick={() =>
+                                              router.push(
+                                                `/admin/banner/th/edit?id=${row.banner_id}`
+                                              )
+                                            }
+                                          >
+                                            <EditIcon fontSize="inherit" />
+                                          </IconButton>
 
-                                <IconButton
-                                  color="error"
-                                  aria-label="delete"
-                                  size="large"
-                                  onClick={() => Delete(row.news_id)}
-                                >
-                                  <DeleteIcon fontSize="inherit" />
-                                </IconButton>
-                              </Stack>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })
-                  : ""}
-              </TableBody>
+                                          <IconButton
+                                            color="error"
+                                            aria-label="delete"
+                                            size="large"
+                                            onClick={() =>
+                                              Delete(row.banner_id)
+                                            }
+                                          >
+                                            <DeleteIcon fontSize="inherit" />
+                                          </IconButton>
+                                        </Stack>
+                                      </TableCell>
+                                    </TableRow>
+                                  )}
+                                </Draggable>
+                              );
+                            })
+                        : ""}
+                    </TableBody>
+                  )}
+                </Droppable>
+              </DragDropContext>
             </Table>
           </TableContainer>
           <TablePagination
@@ -349,7 +416,7 @@ const News: NextPage = () => {
 
 // export const getStaticProps: any = wrapper.getStaticProps(
 //   (store) => async () => {
-//     const data: any = await store.dispatch(getNewsTH());
+//     const data: any = await store.dispatch(getBannerTH());
 //     console.log(data);
 //     return {
 //       props: {
@@ -359,4 +426,4 @@ const News: NextPage = () => {
 //   }
 // );
 
-export default withAuth(News);
+export default withAuth(Banner);

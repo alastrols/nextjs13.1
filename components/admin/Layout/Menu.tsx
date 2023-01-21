@@ -16,7 +16,7 @@ import Link from "next/link";
 import { Layers, BarChart, Person } from "@mui/icons-material";
 import ImageIcon from "@mui/icons-material/Image";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
-
+import PhotoSizeSelectActualIcon from "@mui/icons-material/PhotoSizeSelectActual";
 import { useRouter } from "next/router";
 import PersonIcon from "@mui/icons-material/Person";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
@@ -44,6 +44,7 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
   const userSelector = useSelector((store: any) => store.admin);
   const [userOpen, setUserOpen] = React.useState<boolean>(false);
   const [newsOpen, setNewsOpen] = React.useState<boolean>(false);
+  const [bannerOpen, setBannerOpen] = React.useState<boolean>(false);
 
   return (
     <Drawer
@@ -103,6 +104,161 @@ export default function Menu({ open, onDrawerClose }: MenuProps) {
             </ListItemIcon>
             <ListItemText primary="User" />
           </ListItem>
+        </Link>
+      </List>
+
+      <List>
+        <Link
+          href="#"
+          style={{ textDecoration: "none", color: "#000000DE" }}
+          passHref
+        >
+          <ListItem
+            onClick={() => setBannerOpen(!bannerOpen)}
+            className={
+              router.pathname === "/admin/banner/jp"
+                ? "Mui-selected"
+                : router.pathname === "/admin/banner/jp/edit"
+                ? "Mui-selected"
+                : router.pathname === "/admin/banner/jp/add"
+                ? "Mui-selected"
+                : router.pathname === "/admin/banner/en"
+                ? "Mui-selected"
+                : router.pathname === "/admin/banner/en/edit"
+                ? "Mui-selected"
+                : router.pathname === "/admin/banner/en/add"
+                ? "Mui-selected"
+                : router.pathname === "/admin/banner/th"
+                ? "Mui-selected"
+                : router.pathname === "/admin/banner/th/edit"
+                ? "Mui-selected"
+                : router.pathname === "/admin/banner/th/add"
+                ? "Mui-selected"
+                : ""
+            }
+          >
+            <ListItemIcon>
+              <PhotoSizeSelectActualIcon />
+            </ListItemIcon>
+            <ListItemText primary="Banner" />
+          </ListItem>
+
+          <Collapse
+            key={0}
+            in={
+              router.pathname === "/admin/banner/jp"
+                ? true
+                : router.pathname === "/admin/banner/jp/edit"
+                ? true
+                : router.pathname === "/admin/banner/jp/add"
+                ? true
+                : router.pathname === "/admin/banner/en"
+                ? true
+                : router.pathname === "/admin/banner/en/edit"
+                ? true
+                : router.pathname === "/admin/banner/en/add"
+                ? true
+                : router.pathname === "/admin/banner/th"
+                ? true
+                : router.pathname === "/admin/banner/th/edit"
+                ? true
+                : router.pathname === "/admin/banner/th/add"
+                ? true
+                : bannerOpen
+            }
+            timeout="auto"
+            unmountOnExit
+          >
+            <List
+              component="li"
+              disablePadding
+              key={0}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Link
+                href="/admin/banner/jp"
+                style={{
+                  textDecoration:
+                    router.pathname == "/admin/banner/jp"
+                      ? ""
+                      : router.pathname == "/admin/banner/jp/add"
+                      ? ""
+                      : router.pathname == "/admin/banner/jp/edit"
+                      ? ""
+                      : "none",
+                  color: "#000000DE",
+                }}
+                passHref
+              >
+                <ListItem key={0}>
+                  <ListItemIcon>
+                    <PhotoSizeSelectActualIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText key={0} primary="JP" />
+                </ListItem>
+              </Link>
+            </List>
+
+            <List
+              component="li"
+              disablePadding
+              key={1}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Link
+                href="/admin/banner/en"
+                style={{
+                  textDecoration:
+                    router.pathname == "/admin/banner/en"
+                      ? ""
+                      : router.pathname == "/admin/banner/en/add"
+                      ? ""
+                      : router.pathname == "/admin/banner/en/edit"
+                      ? ""
+                      : "none",
+                  color: "#000000DE",
+                }}
+                passHref
+              >
+                <ListItem key={1}>
+                  <ListItemIcon>
+                    <PhotoSizeSelectActualIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText key={1} primary="EN" />
+                </ListItem>
+              </Link>
+            </List>
+
+            <List
+              component="li"
+              disablePadding
+              key={2}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Link
+                href="/admin/banner/th"
+                style={{
+                  textDecoration:
+                    router.pathname == "/admin/banner/th"
+                      ? ""
+                      : router.pathname == "/admin/banner/th/add"
+                      ? ""
+                      : router.pathname == "/admin/banner/th/edit"
+                      ? ""
+                      : "none",
+                  color: "#000000DE",
+                }}
+                passHref
+              >
+                <ListItem key={2}>
+                  <ListItemIcon>
+                    <PhotoSizeSelectActualIcon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText key={2} primary="TH" />
+                </ListItem>
+              </Link>
+            </List>
+          </Collapse>
         </Link>
       </List>
 

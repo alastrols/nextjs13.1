@@ -28,7 +28,7 @@ import {
   EnhancedTableHead,
   EnhancedTableToolbarProps,
 } from "@/components/table/admin/user/TableHeads";
-import { getUser, deleteUser } from "@/features/admin/user";
+import { getUser, deleteUser, deleteAllUser } from "@/features/admin/user";
 import saveAsExcel from "@/features/admin/user/export";
 
 const User: NextPage = () => {
@@ -91,7 +91,7 @@ const User: NextPage = () => {
       if (result.isConfirmed) {
         Swal.fire("Deleted!", "Your data has been deleted.", "success").then(
           function () {
-            dispatch(deleteUser(id)).then((result: any) => {
+            dispatch(deleteAllUser(id)).then((result: any) => {
               if (result.payload.status == "success") {
                 dispatch(getUser());
               }

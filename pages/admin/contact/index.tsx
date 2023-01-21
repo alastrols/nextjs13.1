@@ -40,6 +40,7 @@ import {
 import {
   getContact,
   deleteContact,
+  deleteAllContact,
   getContactById,
 } from "@/features/admin/contact";
 import saveAsExcel from "@/features/admin/contact/export";
@@ -141,7 +142,7 @@ const User: NextPage = () => {
       if (result.isConfirmed) {
         Swal.fire("Deleted!", "Your data has been deleted.", "success").then(
           function () {
-            dispatch(deleteContact(id)).then((result: any) => {
+            dispatch(deleteAllContact(id)).then((result: any) => {
               if (result.payload.status == "success") {
                 dispatch(getContact());
               }

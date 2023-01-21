@@ -28,7 +28,11 @@ import {
   EnhancedTableHead,
   EnhancedTableToolbarProps,
 } from "@/components/table/admin/news/TableHeads";
-import { getNewsEN, deleteNewsEN } from "@/features/admin/news";
+import {
+  getNewsEN,
+  deleteNewsEN,
+  deleteAllNewsEN,
+} from "@/features/admin/news";
 
 const News: NextPage = () => {
   const dispatch = appDispatch();
@@ -90,7 +94,7 @@ const News: NextPage = () => {
       if (result.isConfirmed) {
         Swal.fire("Deleted!", "Your data has been deleted.", "success").then(
           function () {
-            dispatch(deleteNewsEN(id)).then((result: any) => {
+            dispatch(deleteAllNewsEN(id)).then((result: any) => {
               if (result.payload.status == "success") {
                 dispatch(getNewsEN());
               }
